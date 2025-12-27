@@ -5,8 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/growing-tree/',
-  optimizeDeps: {
-    include: ['@mediapipe/hands', '@mediapipe/camera_utils']
+  build: {
+    rollupOptions: {
+      external: ['@mediapipe/hands', '@mediapipe/camera_utils'],
+    }
   }
 })
 

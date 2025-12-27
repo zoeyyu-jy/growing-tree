@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as mpHands from '@mediapipe/hands';
-import * as cam from '@mediapipe/camera_utils';
 
 const HandTree = () => {
   const videoRef = useRef(null);
@@ -12,15 +10,16 @@ const HandTree = () => {
 
   // Initialize MediaPipe Hands
   useEffect(() => {
-    // Handle different export formats in production build
-    const HandsClass = mpHands.Hands || (mpHands.default && mpHands.default.Hands) || mpHands;
+    // Access global variables loaded from index.html scripts
+    const HandsClass = window.Hands;
+    const CameraClass = window.Camera;
     
-    if (typeof HandsClass !== 'function' && !window.Hands) {
-      console.error('Hands constructor not found');
+    if (!HandsClass) {
+      console.error('MediaPipe Hands not found on window');
       return;
     }
 
-    const hands = new (HandsClass || window.Hands)({
+    const hands = new HandsClass({
       locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
       },
@@ -39,9 +38,8 @@ const HandTree = () => {
     });
     handsRef.current = hands;
 
-    if (videoRef.current) {
-      const CameraClass = cam.Camera || (cam.default && cam.default.Camera) || cam;
-      cameraRef.current = new (CameraClass || window.Camera)(videoRef.current, {
+    if (videoRef.current && CameraClass) {
+      cameraRef.current = new CameraClass(videoRef.current, {
         onFrame: async () => {
           await hands.send({ image: videoRef.current });
         },
