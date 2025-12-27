@@ -1,0 +1,32 @@
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+}
+
+.instructions {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.instructions h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #38bdf8;
+}
+
+.instructions p {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
